@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { StackProvider, StackTheme } from "@stackframe/stack";
+import { stackServerApp } from "../stack";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import {ThemeProvider} from "next-themes";
+import {Toaster} from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,7 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      ><StackProvider app={stackServerApp}><StackTheme>
       <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -37,9 +40,10 @@ export default function RootLayout({
           disableTransitionOnChange
       >
       <Navbar />
+          <Toaster />
         {children}
       </ThemeProvider>
-      </body>
+      </StackTheme></StackProvider></body>
     </html>
   );
 }
