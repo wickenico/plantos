@@ -15,14 +15,29 @@ datasource db {
 }
 
 model Plants {
-  id String @id @default(cuid())
-  name String
-  description String?
-  category String
-  stock Int
-  price Float
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  userId String
-  imageUrl String?
+  id             String    @id @default(cuid())
+  name           String
+  nickname       String?
+  description    String?
+  category       String?
+  species        String?
+  potSize        String?
+  origin         String?
+  height         Float?
+  location       String?
+  sunlight       String?
+  humidityNeeds  String?
+  soilType       String?
+  fertilizerType String?
+  waterCycle     Int?
+  lastWatered    DateTime?
+  lastRepotted   DateTime?
+  notes          String?
+  referenceLinks String[]
+  isFavorite     Boolean      @default(false)
+  isDead         Boolean      @default(false)
+  imageUrl       String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  userId         String
 }

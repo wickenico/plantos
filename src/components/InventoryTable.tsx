@@ -115,42 +115,41 @@ export default function InventoryTable({ plants }: InventoryTableProps) {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Plant ID</TableHead>
                         <TableHead>Name</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Price</TableHead>
-                        <TableHead>Stock</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                        <TableHead>Spitzname</TableHead>
+                        <TableHead>Topfgröße</TableHead>
+                        <TableHead>Standort</TableHead>
+                        <TableHead>Höhe (cm)</TableHead>
+                        <TableHead className="text-right">Aktionen</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {filteredPlants?.map((plant) => {
-
                         const slugifiedName = plant.name.toLowerCase().replace(/\s+/g, "-");
                         const slug = `${plant.id}--${slugifiedName}`;
                         const plantUrl = `/plants/${slug}`;
 
                         return (
-
-                        <TableRow key={plant.id} onClick={() => router.push(plantUrl)}>
-                            <TableCell>{plant.id}</TableCell>
-                            <TableCell>{plant.name}</TableCell>
-                            <TableCell>{plant.category}</TableCell>
-                            <TableCell>{plant.price}</TableCell>
-                            <TableCell className="font-bold">{plant.stock}</TableCell>
-                            <TableCell className="text-right">
-                                <div className="flex justify-end space-x-4"
-                                     onClick={(e) => e.stopPropagation()}>
-                                    <EditDialog plant={plant}/>
-                                    <DeleteDialog plant={plant}/>
-                                </div>
-                            </TableCell>
-                        </TableRow>
-                    )})}
+                            <TableRow key={plant.id} onClick={() => router.push(plantUrl)}>
+                                <TableCell>{plant.name}</TableCell>
+                                <TableCell>{plant.nickname ?? "—"}</TableCell>
+                                <TableCell>{plant.potSize ?? "—"}</TableCell>
+                                <TableCell>{plant.location ?? "—"}</TableCell>
+                                <TableCell>{plant.height ?? "—"}</TableCell>
+                                <TableCell className="text-right">
+                                    <div
+                                        className="flex justify-end space-x-4"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <EditDialog plant={plant} />
+                                        <DeleteDialog plant={plant} />
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
-
         </div>
-
     );
 }
