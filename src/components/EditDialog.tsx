@@ -92,7 +92,7 @@ export default function EditDialog({ plant }: EditDialogProps) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="secondary" className="ml-auto flex items-center gap-2" asChild>
+                <Button variant="secondary" className="ml-auto flex items-center gap-2 cursor-pointer" asChild>
           <span>
             <EditIcon className="w-4 h-4" />
             Edit Plant

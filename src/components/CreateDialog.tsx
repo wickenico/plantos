@@ -83,7 +83,7 @@ export default function CreateDialog() {
             <AlertDialogTrigger asChild>
                 <Button
                     variant="default"
-                    className="ml-auto font-bold flex items-center gap-2"
+                    className="ml-auto font-bold flex items-center gap-2 cursor-pointer"
                     asChild
                 >
                     <span>

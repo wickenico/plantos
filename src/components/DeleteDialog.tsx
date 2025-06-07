@@ -40,7 +40,7 @@ export default function DeleteDialog({ plant }: DeleteDialogProps) {
             <AlertDialogTrigger asChild>
                 <Button
                     variant="destructive"
-                    className="ml-auto flex items-center gap-2"
+                    className="ml-auto flex items-center gap-2 cursor-pointer"
                     asChild
                 >
           <span>

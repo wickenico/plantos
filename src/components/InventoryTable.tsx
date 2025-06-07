@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import {Input} from "@/components/ui/input";
-import {Search} from "lucide-react";
+import {Search, X} from "lucide-react";
 import {useState} from "react";
 import {Combobox} from "@/components/ui/combo-box";
 import {getPlants} from "@/actions/plant.action";
@@ -30,11 +30,20 @@ export default function InventoryTable({ plants }: InventoryTableProps) {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
 
-    const filteredPlants = plants?.userPlants?.filter(
-        (plant) =>
-            plant.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-            (selectedCategory === "" || plant.category === selectedCategory)
-    );
+    const filteredPlants = plants?.userPlants?.filter((plant) => {
+        const term = searchTerm.toLowerCase();
+        const matchesSearch =
+            plant.name?.toLowerCase().includes(term) ||
+            plant.nickname?.toLowerCase().includes(term) ||
+            plant.potSize?.toLowerCase().includes(term) ||
+            plant.location?.toLowerCase().includes(term) ||
+            (plant.height !== null && plant.height?.toString().includes(term));
+
+        const matchesCategory =
+            selectedCategory === "" || plant.category === selectedCategory;
+
+        return matchesSearch && matchesCategory;
+    });
 
     if (!plants) {
         return (
@@ -102,11 +111,21 @@ export default function InventoryTable({ plants }: InventoryTableProps) {
                 <div className="relative max-w-sm w-full">
                     <Input
                         placeholder="Filter plants..."
-                        className="pl-10"
+                        className="pl-10 pr-8"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <Search className="absolute h-4 w-4 left-3 top-1/2 transform -translate-y-1/2" />
+                    <Search className="absolute h-4 w-4 left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+
+                    {searchTerm && (
+                        <button
+                            type="button"
+                            onClick={() => setSearchTerm("")}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600"
+                            aria-label="Clear search">
+                            <X className="h-4 w-4" />
+                        </button>
+                    )}
                 </div>
                 <Combobox value={selectedCategory} onChange={value => setSelectedCategory(value)} />
                 <CreateDialog />
@@ -130,7 +149,8 @@ export default function InventoryTable({ plants }: InventoryTableProps) {
                         const plantUrl = `/plants/${slug}`;
 
                         return (
-                            <TableRow key={plant.id} onClick={() => router.push(plantUrl)}>
+                            <TableRow key={plant.id} onClick={() => router.push(plantUrl)}
+                              className="cursor-pointer hover:bg-muted/40 transition-colors">
                                 <TableCell>{plant.name}</TableCell>
                                 <TableCell>{plant.nickname ?? "—"}</TableCell>
                                 <TableCell>{plant.potSize ?? "—"}</TableCell>
