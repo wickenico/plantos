@@ -10,7 +10,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Sprout } from "lucide-react";
+import { Sprout, X } from "lucide-react";
 import { Combobox } from "./ui/combo-box";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -21,22 +21,24 @@ import toast from "react-hot-toast";
 import ImageUpload from "./ImageUpload";
 
 export default function CreateDialog() {
+    const today = new Date().toISOString().split("T")[0];
+
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         category: "",
         species: "",
-        potSize: "",
+        potSize: "0",
         origin: "",
-        height: "",
+        height: "0",
         location: "",
         sunlight: "",
         humidityNeeds: "",
         soilType: "",
         fertilizerType: "",
-        waterCycle: "",
-        lastWatered: "",
-        lastRepotted: "",
+        waterCycle: "0",
+        lastWatered: today,
+        lastRepotted: today,
         notes: "",
         referenceLinks: "",
         isFavorite: false,
@@ -61,6 +63,7 @@ export default function CreateDialog() {
             const formatted = {
                 ...formData,
                 height: formData.height ? parseFloat(formData.height as string) : null,
+                potSize: formData.potSize ? parseFloat(formData.potSize as string) : null,
                 waterCycle: formData.waterCycle ? parseInt(formData.waterCycle as string) : null,
                 lastWatered: formData.lastWatered ? new Date(formData.lastWatered) : null,
                 lastRepotted: formData.lastRepotted ? new Date(formData.lastRepotted) : null,
@@ -93,6 +96,11 @@ export default function CreateDialog() {
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
+                <div className="flex justify-end">
+                    <AlertDialogCancel className="text-red-500 hover:text-red-700">
+                        <X className="w-5 h-5" />
+                    </AlertDialogCancel>
+                </div>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Add a Plant</AlertDialogTitle>
                     <AlertDialogDescription>
@@ -106,7 +114,7 @@ export default function CreateDialog() {
                 >
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label htmlFor="name">Name *</Label>
+                            <Label htmlFor="name">Name <span className="text-red-500">*</span></Label>
                             <Input
                                 id="name"
                                 type="text"
@@ -115,7 +123,7 @@ export default function CreateDialog() {
                             />
                         </div>
                         <div>
-                            <Label htmlFor="category">Category *</Label>
+                            <Label htmlFor="category">Category <span className="text-red-500">*</span></Label>
                             <Combobox
                                 value={formData.category}
                                 onChange={(val) => handleChange("category", val)}
@@ -130,9 +138,10 @@ export default function CreateDialog() {
                             />
                         </div>
                         <div>
-                            <Label htmlFor="potSize">Pot Size</Label>
+                            <Label htmlFor="potSize">Pot Size (cm)</Label>
                             <Input
                                 id="potSize"
+                                type="number"
                                 value={formData.potSize}
                                 onChange={(e) => handleChange("potSize", e.target.value)}
                             />
@@ -147,7 +156,7 @@ export default function CreateDialog() {
                             />
                         </div>
                         <div>
-                            <Label htmlFor="location">Location *</Label>
+                            <Label htmlFor="location">Location <span className="text-red-500">*</span></Label>
                             <Input
                                 id="location"
                                 value={formData.location}
@@ -187,7 +196,7 @@ export default function CreateDialog() {
                             />
                         </div>
                         <div>
-                            <Label htmlFor="waterCycle">Water Cycle (days) *</Label>
+                            <Label htmlFor="waterCycle">Water Cycle (days) <span className="text-red-500">*</span></Label>
                             <Input
                                 id="waterCycle"
                                 type="number"
@@ -253,7 +262,6 @@ export default function CreateDialog() {
                         onChange={(e) => handleChange("notes", e.target.value)}
                     />
 
-                    {/*Image Upload*/}
                     <div className="py-5">
                         <ImageUpload
                             endpoint="postImage"
